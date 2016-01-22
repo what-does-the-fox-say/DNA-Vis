@@ -212,6 +212,12 @@ Es sei in diesem Fall:
 Warum wurde das erstere gewählt? := Warum einfach wenns auch kompliziert geht?
 ```
 
+---
+
+#### Was man von Anfang an hätte tun können:
+
+Auf Chrome, Firefox und IE11-Kompatibilität achten.
+
 ## Schlusswort
 
 Also es gibt schönes und schöneres HTML+JS.
