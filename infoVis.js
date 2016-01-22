@@ -108,11 +108,14 @@ function buildSmallBarCharts(data)
     }
     
     // Add a null-value-line after half of the height of image.
-    svgs.append("line").style("stroke", "#000000")
-        .attr("x1", 0)
-        .attr("x2", svg.width)
-        .attr("y1", zeroLine)
-        .attr("y2", zeroLine);
+	// Why not using SVG's "line"-Element?
+	//  - Now the rect is always one unit high. A line renders different in Firefox and e.g. Chrome
+	svgs.append("rect")
+		.attr("fill", "#333333")
+		.attr("x", 0)
+		.attr("width", svg.width)
+		.attr("y", zeroLine)
+		.attr("height", 1);
 
     // Create bar.groups so all bars in one chart are grouped together
     bar.groups = svgs.append("g");
@@ -133,18 +136,16 @@ function buildSmallBarCharts(data)
         
             return bar.gap * (i+1) + bar.width * i; 
         })
-        .attr("y", zeroLine)
-        .style("transform", "translate(0, -100%)")    // This changes the anchor-point (see below)
+        .attr("y", function (d) {
+			// d = the data bound to this bar
+			
+			return zeroLine - heightScale(d);
+		})
         .attr("height", function (d) {
             // d = the data bound to this bar
             
             return heightScale(d);
         });
-		
-	// By default the anchor-point of everything is on left top in HTML
-	// The translate changes the anchor point to left bottom.
-	// So now height will be "real" height and not "negative" height
-    // Just try it out without it so you will see what happens ;)
         
     // The array wich will contain the reduction-values on comparison with the other charts.
     var reductionArray = [];
@@ -154,7 +155,7 @@ function buildSmallBarCharts(data)
     }
     
     // Contains the last clicked svg object and its index
-    var last = { index : undefined, object : undefined }
+    var lastsvg = { index : undefined, object : undefined }
     
     // Add onclick event to all the svgs.
     svgs.on("click", function (d, i) {
@@ -162,14 +163,14 @@ function buildSmallBarCharts(data)
         // i = the index of this (clicked) svg
         
         // remove the background of the last clicked image if one was clicked previously
-        if(last.index)
-            last.object.style("background", null);
+        if(lastsvg.object)
+            lastsvg.object.style("background", null);
         
         // Set "new" last object
-        last.object = d3.select(this);
+        lastsvg.object = d3.select(this);
         
         // If (last clicked image index == this clicked image index)
-        if(last.index == i)
+        if(lastsvg.index == i)
         {
             // Set all the reduction to 0 so all the svgs get there old style back.
             for(var j = 0; j < reductionArray.length; j++)
@@ -178,15 +179,15 @@ function buildSmallBarCharts(data)
             }
             
             // There is no last clicked it was taken back. ;)
-            last.index = undefined;
+            lastsvg.index = undefined;
         }
         else
         {
             // Set "new" last index.
-            last.index = i;
+            lastsvg.index = i;
             
             // Set the reductionArray, so reductionArray[n] contains the reduction every n-th bar in every svg.
-            last.object.selectAll("rect").each(function (d, i) {
+            lastsvg.object.select("g").selectAll("rect").each(function (d, i) {
                 // d = the data bound to the bar
                 // i = the index of the bar
                 
@@ -194,7 +195,7 @@ function buildSmallBarCharts(data)
             });
             
             // Add a transparent-black background to see wich was clicked.
-            last.object.style("background", "rgba(0, 0, 0, .1)");
+            lastsvg.object.style("background", "rgba(0, 0, 0, .1)");
         }
         
         // Adapt all bars to the new values.
@@ -209,7 +210,7 @@ function buildSmallBarCharts(data)
             d3.select(this)
                 .transition()                                                                 // Lets animate this. :)
                 .attr("height", Math.abs(newHeight))
-                .attr("y", newHeight < 0 ? zeroLine + 1 + Math.abs(newHeight) : zeroLine)     // if it is a negative value move the anchor to below the zeroLine
+                .attr("y", newHeight < 0 ? zeroLine + 1 : zeroLine - newHeight)
 				.attr("fill", newHeight < 0 ? color.negative : color.positive);               // change the color according to the new value
         });
     });
