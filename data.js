@@ -9,17 +9,17 @@
  */
 function randomData(count, pointsPerArray, maxValue)
 {     
-	// The later returned array containing the arrays.
-	var data = [];
+    // The later returned array containing the arrays.
+    var data = [];
     
-	// Create "count" arrays in this array and fill it with "pointsPerArray" data-points
+    // Create "count" arrays in this array and fill it with "pointsPerArray" data-points
     for(var i = 0; i < count; i++)
     {
-		data[i] = [];
+        data[i] = [];
         for(var j = 0; j < pointsPerArray; j++)
         {
-			// Math.random generates values in the range of [0, 1)
-			// So use floor and add one to fullfil the range with the max-value
+            // Math.random generates values in the range of [0, 1)
+            // So use floor and add one to fullfil the range with the max-value
             data[i][j] = Math.floor(Math.random()*maxValue+1);        
         }
     }

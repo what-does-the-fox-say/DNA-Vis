@@ -49,12 +49,12 @@ function buildSmallBarCharts(data)
         ]
     }
     
-	// The colors for the values
-	var color = {
-		positive : "#5d9b9b",
-		negative : "#fa842b"
-	}
-	
+    // The colors for the values
+    var color = {
+        positive : "#5d9b9b",
+        negative : "#fa842b"
+    }
+    
     // Object later containing all important values and bars in the charts.
     var bar = {};
     
@@ -108,14 +108,14 @@ function buildSmallBarCharts(data)
     }
     
     // Add a null-value-line after half of the height of image.
-	// Why not using SVG's "line"-Element?
-	//  - Now the rect is always one unit high. A line renders different in Firefox and e.g. Chrome
-	svgs.append("rect")
-		.attr("fill", "#333333")
-		.attr("x", 0)
-		.attr("width", svg.width)
-		.attr("y", zeroLine)
-		.attr("height", 1);
+    // Why not using SVG's "line"-Element?
+    //  - Now the rect is always one unit high. A line renders different in Firefox and e.g. Chrome
+    svgs.append("rect")
+        .attr("fill", "#333333")
+        .attr("x", 0)
+        .attr("width", svg.width)
+        .attr("y", zeroLine)
+        .attr("height", 1);
 
     // Create bar.groups so all bars in one chart are grouped together
     bar.groups = svgs.append("g");
@@ -137,10 +137,10 @@ function buildSmallBarCharts(data)
             return bar.gap * (i+1) + bar.width * i; 
         })
         .attr("y", function (d) {
-			// d = the data bound to this bar
-			
-			return zeroLine - heightScale(d);
-		})
+            // d = the data bound to this bar
+            
+            return zeroLine - heightScale(d);
+        })
         .attr("height", function (d) {
             // d = the data bound to this bar
             
@@ -205,13 +205,13 @@ function buildSmallBarCharts(data)
             
             // guess what ;)
             var newHeight = heightScale(d - reductionArray[i]);
-			
-			// change the values
+            
+            // change the values
             d3.select(this)
                 .transition()                                                                 // Lets animate this. :)
                 .attr("height", Math.abs(newHeight))
                 .attr("y", newHeight < 0 ? zeroLine + 1 : zeroLine - newHeight)
-				.attr("fill", newHeight < 0 ? color.negative : color.positive);               // change the color according to the new value
+                .attr("fill", newHeight < 0 ? color.negative : color.positive);               // change the color according to the new value
         });
     });
 }
