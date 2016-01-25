@@ -1,5 +1,7 @@
 # DNA-Vis-2016
 
+License: [CC-0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)
+
 ## [Demo](http://what-does-the-fox-say.github.io/)
 
 ## Allgemeines
