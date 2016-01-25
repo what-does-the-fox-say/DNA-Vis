@@ -24,7 +24,7 @@ Und sagen wir mal der ominöse Code aus diesem Ilias hat folgende Ordnerstruktur
 ```
 ├── d3/
 │    └── d3.js
-|
+│
 ├── data.js
 ├── infoVis.html
 └── infoVis.js
